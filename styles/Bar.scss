@@ -1,0 +1,21 @@
+// https://gitlab.gnome.org/GNOME/gtk/-/blob/gtk-3-24/gtk/theme/Adwaita/_colors-public.scss
+$fg-color: #{"@theme_fg_color"};
+$bg-color: #{"@theme_bg_color"};
+
+.bar-container {
+    background: $bg-color;
+    border-radius: 2px;
+    margin: 4px;
+    margin-right: 0px;
+
+    button {
+        border-radius: 8px;
+        margin: 2px;
+    }
+
+    label {
+        font-family: "Times New Roman", Times, serif;
+        font-weight: 900;
+        font-size: 24px;
+    }
+}

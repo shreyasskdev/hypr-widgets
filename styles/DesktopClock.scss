@@ -1,0 +1,15 @@
+// https://gitlab.gnome.org/GNOME/gtk/-/blob/gtk-3-24/gtk/theme/Adwaita/_colors-public.scss
+$fg-color: #{"@theme_fg_color"};
+$bg-color: #{"@theme_bg_color"};
+
+.clock-container {
+    font-weight: bold;
+    font-family: Electroharmonix;
+    color: $bg-color;
+}
+.clock-time {
+    font-size: 100px;
+}
+.clock-date {
+    font-size: 25px;
+}
