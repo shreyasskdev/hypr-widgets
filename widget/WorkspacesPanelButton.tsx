@@ -27,12 +27,11 @@ function WorkspaceButton({ ws, ...props }: WsButtonProps) {
 
   return (
     <button
-      // cssClasses={classNames()}
+      className={classNames().as((classes) => classes.join(" "))}
       onDestroy={() => classNames.drop()}
-      // valign={Gtk.Align.CENTER}
-      // halign={Gtk.Align.CENTER}
-
       onClicked={() => ws.focus()}
+      width_request={2}
+      height_request={2}
       {...props}
     />
   );
@@ -42,7 +41,8 @@ export default function WorkspacesPanelButton() {
   return (
     <box
       className="workspace-container"
-      spacing={4}
+      halign={Gtk.Align.CENTER}
+      hexpand={true}
       orientation={Gtk.Orientation.VERTICAL}
     >
       {range(6).map((i) => (

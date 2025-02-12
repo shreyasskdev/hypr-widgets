@@ -23,13 +23,19 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
       exclusivity={Astal.Exclusivity.EXCLUSIVE}
       anchor={TOP | LEFT | BOTTOM}
       application={App}
+      width_request={10}
+      height_request={10}
+      widthRequest={10}
+      heightRequest={10}
       // layer={Astal.Layer.BOTTOM}
     >
       <centerbox
         orientation={Gtk.Orientation.VERTICAL}
-        widthRequest={50}
         className="bar-container"
       >
+        <box valign={Gtk.Align.START}>
+          <WorkspacesPanelButton />
+        </box>
         <box
           orientation={Gtk.Orientation.VERTICAL}
           heightRequest={100}
@@ -39,8 +45,7 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
           <label label=":" angle={90} />
           <label label={minute()} />
         </box>
-        <WorkspacesPanelButton />
-        <box>
+        <box valign={Gtk.Align.END}>
           <label label={b} />
         </box>
       </centerbox>

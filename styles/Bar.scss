@@ -4,8 +4,8 @@ $bg-color: #{"@theme_bg_color"};
 
 .bar-container {
     background: $bg-color;
-    border-radius: 2px;
-    margin: 4px;
+    /* border-radius: 2px; */
+    /* margin: 4px; */
     margin-right: 0px;
 
     button {
@@ -16,6 +16,42 @@ $bg-color: #{"@theme_bg_color"};
     label {
         font-family: "Times New Roman", Times, serif;
         font-weight: 900;
-        font-size: 24px;
+        font-size: 20px;
+    }
+    .workspace-container {
+        background: #ffffff22;
+        border-radius: 100px;
+        margin-top: 5px;
+
+        padding: 3px;
+        > .workspace-button {
+            background: $bg-color;
+            border-radius: 100%;
+            min-height: 12px;
+            min-width: 12px;
+            border: 0;
+            padding: 2px;
+
+            &:hover {
+                background: red;
+                &.occupied {
+                    background: blue;
+                }
+            }
+
+            &.active {
+                /* min-width: 2.5rem;
+                min-height: 0.95rem; */
+                background: green;
+            }
+
+            &.occupied {
+                box-shadow: unset;
+                /* background: white; */
+                &.active {
+                    background: $fg-color;
+                }
+            }
+        }
     }
 }
