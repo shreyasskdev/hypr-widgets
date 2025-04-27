@@ -1,11 +1,7 @@
-// https://gitlab.gnome.org/GNOME/gtk/-/blob/gtk-3-24/gtk/theme/Adwaita/_colors-public.scss
-$fg-color: #{"@theme_fg_color"};
-$bg-color: #{"@theme_bg_color"};
+@use "/home/shreyas/.cache/wal/colors.scss" as colors;
 
 .bar-container {
-    background: $bg-color;
-    /* border-radius: 2px; */
-    /* margin: 4px; */
+    background: colors.$background;
     margin-right: 0px;
 
     button {
@@ -13,43 +9,63 @@ $bg-color: #{"@theme_bg_color"};
         margin: 2px;
     }
 
-    label {
-        font-family: "Times New Roman", Times, serif;
-        font-weight: 900;
+    .clock {
+        font-family: "Electroharmonix", Times, serif;
+        font-weight: 700;
         font-size: 20px;
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+        color: colors.$foreground;
+    }
+
+    .battery {
+        /* font-family: "poppins"; */
+        font-weight: 600;
+        font-size: 14px;
+
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+        /* margin-bottom: 1rem; */
+    }
+    .battery-icon {
+        font-size: 18px;
+
+        margin-left: 0rem;
+        margin-right: 0.7rem;
+        margin-bottom: 1rem;
     }
     .workspace-container {
-        background: #ffffff22;
+        background: rgba(colors.$color6, 0.15);
         border-radius: 100px;
         margin-top: 5px;
 
         padding: 3px;
         > .workspace-button {
-            background: $bg-color;
+            background: rgba(colors.$background, 0.7);
             border-radius: 100%;
             min-height: 12px;
             min-width: 12px;
             border: 0;
             padding: 2px;
+            box-shadow: unset;
 
             &:hover {
-                background: red;
+                background: rgba(colors.$color6, 0.15);
                 &.occupied {
-                    background: blue;
+                    background: rgba(colors.$color6, 0.7);
                 }
             }
 
             &.active {
                 /* min-width: 2.5rem;
                 min-height: 0.95rem; */
-                background: green;
+                background: colors.$foreground;
             }
 
             &.occupied {
-                box-shadow: unset;
                 /* background: white; */
                 &.active {
-                    background: $fg-color;
+                    background: colors.$color6;
                 }
             }
         }

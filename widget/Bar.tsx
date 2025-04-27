@@ -41,12 +41,13 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
           heightRequest={100}
           valign={Gtk.Align.CENTER}
         >
-          <label label={hour()} />
-          <label label=":" angle={90} />
-          <label label={minute()} />
+          <label label={hour()} className="clock" />
+          <label label=":" angle={90} className="clock" />
+          <label label={minute()} className="clock" />
         </box>
-        <box valign={Gtk.Align.END}>
-          <label label={b} />
+        <box valign={Gtk.Align.END} orientation={Gtk.Orientation.VERTICAL}>
+          <label label={b} className="battery" />
+          <label label="" className="battery-icon" />
         </box>
       </centerbox>
     </window>

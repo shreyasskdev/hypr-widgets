@@ -1,11 +1,12 @@
 // https://gitlab.gnome.org/GNOME/gtk/-/blob/gtk-3-24/gtk/theme/Adwaita/_colors-public.scss
-$fg-color: #{"@theme_fg_color"};
-$bg-color: #{"@theme_bg_color"};
+/* $fg-color: #{"@theme_fg_color"};
+$bg-color: #{"@theme_bg_color"}; */
+@use "/home/shreyas/.cache/wal/colors.scss" as colors;
 
 .clock-container {
     font-weight: bold;
     font-family: Electroharmonix;
-    color: $bg-color;
+    color: colors.$background;
 }
 .clock-time {
     font-size: 100px;
