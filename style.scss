@@ -1,5 +1,6 @@
 @use "./styles/DesktopClock.scss";
 @use "./styles/Bar.scss";
+@use "./styles/Charging.scss";
 
 // https://gitlab.gnome.org/GNOME/gtk/-/blob/gtk-3-24/gtk/theme/Adwaita/_colors-public.scss
 $fg-color: #{"@theme_fg_color"};

@@ -19,13 +19,11 @@
     }
 
     .battery {
-        /* font-family: "poppins"; */
         font-weight: 600;
         font-size: 14px;
 
         margin-left: 0.5rem;
         margin-right: 0.5rem;
-        /* margin-bottom: 1rem; */
     }
     .battery-icon {
         font-size: 18px;
@@ -57,13 +55,10 @@
             }
 
             &.active {
-                /* min-width: 2.5rem;
-                min-height: 0.95rem; */
                 background: colors.$foreground;
             }
 
             &.occupied {
-                /* background: white; */
                 &.active {
                     background: colors.$color6;
                 }

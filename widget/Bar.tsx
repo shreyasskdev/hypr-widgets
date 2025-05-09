@@ -4,7 +4,6 @@ import WorkspacesPanelButton from "./WorkspacesPanelButton";
 import Battery from "gi://AstalBattery";
 import { bind } from "astal";
 
-// const time = Variable("").poll(1000, "date");
 const hour = Variable("").poll(1000, "date +%I");
 const minute = Variable("").poll(1000, "date +%M");
 const ampm = Variable("").poll(1000, "date +%p");
@@ -27,7 +26,6 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
       height_request={10}
       widthRequest={10}
       heightRequest={10}
-      // layer={Astal.Layer.BOTTOM}
     >
       <centerbox
         orientation={Gtk.Orientation.VERTICAL}

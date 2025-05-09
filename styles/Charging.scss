@@ -1,0 +1,13 @@
+@use "/home/shreyas/.cache/wal/colors.scss" as colors;
+
+.charging-box {
+    background: colors.$background;
+    min-width: 200px;
+    min-height: 200px;
+    border-radius: 50%;
+    label {
+        font-family: "Electroharmonix", Times, serif;
+        color: colors.$color6;
+        font-size: 3rem;
+    }
+}
