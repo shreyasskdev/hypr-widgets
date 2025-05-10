@@ -35,7 +35,7 @@ Includes a Desktop clock, sidebar, and a charging animation.
 2. Copy the shaders to the Hyprland configuration:
 
     ```bash
-    mkdir -p ~/.config/hyprland/shaders
+    mkdir -p ~/.config/hypr/shaders
     cp -r ~/.config/ags/shaders/* ~/.config/hypr/shaders/
     ```
 
