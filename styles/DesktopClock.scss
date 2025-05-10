@@ -6,7 +6,7 @@ $bg-color: #{"@theme_bg_color"}; */
 .clock-container {
     font-weight: bold;
     font-family: Electroharmonix;
-    color: colors.$background;
+    color: colors.$foreground;
 }
 .clock-time {
     font-size: 100px;
