@@ -4,9 +4,10 @@ import { bind } from "astal";
 import Gio from "gi://Gio";
 import GLib from "gi://GLib";
 
-let chargingWindow = null;
-let notChargingWindow = null;
-let fadeTimeout = 0;
+let alertWindow = null;
+let fadeInId = 0;
+let fadeOutId = 0;
+let timeoutId = 0;
 
 export function playSound(path: string) {
   path = path.replace(/^~/, GLib.get_home_dir());
@@ -24,15 +25,67 @@ export function exec(cmd: string) {
   Gio.Subprocess.new(cmd.split(" "), Gio.SubprocessFlags.NONE);
 }
 
+function stopAnimations() {
+  if (fadeInId) GLib.source_remove(fadeInId);
+  if (fadeOutId) GLib.source_remove(fadeOutId);
+  if (timeoutId) GLib.source_remove(timeoutId);
+  fadeInId = fadeOutId = timeoutId = 0;
+}
+
+function fadeIn(window: Gtk.Window) {
+  stopAnimations();
+  window.opacity = 0;
+  window.visible = true;
+
+  let opacity = 0;
+  const interval = 20;
+  const step = 0.05;
+
+  fadeInId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, interval, () => {
+    opacity = Math.min(opacity + step, 1);
+    window.opacity = opacity;
+
+    if (opacity >= 1) {
+      fadeInId = 0;
+      return GLib.SOURCE_REMOVE;
+    }
+    return GLib.SOURCE_CONTINUE;
+  });
+}
+
+function fadeOut(window: Gtk.Window) {
+  let opacity = 1;
+  const interval = 20;
+  const step = 0.05;
+
+  fadeOutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, interval, () => {
+    opacity = Math.max(opacity - step, 0);
+    window.opacity = opacity;
+
+    if (opacity <= 0) {
+      window.visible = false;
+      fadeOutId = 0;
+      return GLib.SOURCE_REMOVE;
+    }
+    return GLib.SOURCE_CONTINUE;
+  });
+}
+
 export default function ChargingAlert(gdkmonitor: Gdk.Monitor) {
   const battery = Battery.get_default();
   const homeDir = GLib.get_home_dir();
 
-  const batteryPercentage = bind(battery, "percentage").as((val) => {
-    return `${(val * 100).toFixed(0)}%`;
-  });
+  const batteryPercentage = bind(battery, "percentage").as(
+    (val) => `${(val * 100).toFixed(0)}%`,
+  );
 
-  chargingWindow = (
+  const chargingIcon = bind(battery, "charging").as((val) => (val ? "󰂄" : "󰚦"));
+
+  const labelClass = bind(battery, "charging").as(
+    (val) => `charging-label${val ? "" : " not"}`,
+  );
+
+  alertWindow = (
     <window
       className="charging-widget"
       gdkmonitor={gdkmonitor}
@@ -40,8 +93,8 @@ export default function ChargingAlert(gdkmonitor: Gdk.Monitor) {
       application={App}
       layer={Astal.Layer.TOP}
       visible={false}
-      opacity={1.0}
-      title="Charging Widget"
+      opacity={0}
+      title="Charging Alert"
     >
       <box className="charging-box">
         <box
@@ -51,106 +104,33 @@ export default function ChargingAlert(gdkmonitor: Gdk.Monitor) {
           hexpand={true}
           vexpand={true}
         >
-          <label label="󰂄" className="charging-label" />
-          <label label={batteryPercentage} className="charging-label" />
+          <label label={chargingIcon} className="charging-label" />
+          <label label={batteryPercentage} className={labelClass} />
         </box>
       </box>
     </window>
   );
-
-  notChargingWindow = (
-    <window
-      className="charging-widget"
-      gdkmonitor={gdkmonitor}
-      exclusivity={Astal.Exclusivity.IGNORE}
-      application={App}
-      layer={Astal.Layer.TOP}
-      visible={false}
-      opacity={1.0}
-      title="Charging Widget"
-    >
-      <box className="charging-box">
-        <box
-          halign={Gtk.Align.CENTER}
-          valign={Gtk.Align.CENTER}
-          spacing={10}
-          hexpand={true}
-          vexpand={true}
-        >
-          <label label="󰚦" className="charging-label" />
-          <label label={batteryPercentage} className="charging-label not" />
-        </box>
-      </box>
-    </window>
-  );
-
-  function fadeOutWindow(window) {
-    let opacity = 1.0;
-    const fadeStep = 0.05;
-    const interval = 20;
-
-    GLib.timeout_add(GLib.PRIORITY_DEFAULT, interval, () => {
-      opacity -= fadeStep;
-      window.opacity = opacity;
-
-      if (opacity <= 0) {
-        window.visible = false;
-        return GLib.SOURCE_REMOVE;
-      }
-      return GLib.SOURCE_CONTINUE;
-    });
-  }
-
-  function fadeInWindow(window) {
-    let opacity = 0.0;
-    const fadeStep = 0.05;
-    const interval = 20;
-
-    window.opacity = opacity;
-    window.visible = true;
-
-    GLib.timeout_add(GLib.PRIORITY_DEFAULT, interval, () => {
-      opacity += fadeStep;
-      window.opacity = Math.min(opacity, 1.0);
-
-      if (opacity >= 1.0) return GLib.SOURCE_REMOVE;
-      return GLib.SOURCE_CONTINUE;
-    });
-  }
 
   battery.connect("notify::charging", () => {
-    const isCharging = battery.charging;
+    stopAnimations();
 
-    if (isCharging) {
-      GLib.timeout_add(GLib.PRIORITY_DEFAULT, 100, () => {
-        fadeInWindow(chargingWindow);
-        return GLib.SOURCE_REMOVE;
-      });
-      playSound("~/.config/ags/audio/plug.mp3");
-      exec(
-        `hyprctl keyword decoration:screen_shader ${homeDir}/.config/hypr/shaders/charging.frag`,
-      );
-      if (fadeTimeout) GLib.source_remove(fadeTimeout);
-      fadeTimeout = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 2500, () => {
-        fadeOutWindow(chargingWindow);
-        return GLib.SOURCE_REMOVE;
-      });
-    } else {
-      GLib.timeout_add(GLib.PRIORITY_DEFAULT, 100, () => {
-        fadeInWindow(notChargingWindow);
-        return GLib.SOURCE_REMOVE;
-      });
-      playSound("~/.config/ags/audio/unplug.mp3");
-      exec(
-        `hyprctl keyword decoration:screen_shader ${homeDir}/.config/hypr/shaders/charging.frag`,
-      );
-      if (fadeTimeout) GLib.source_remove(fadeTimeout);
-      fadeTimeout = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 2500, () => {
-        fadeOutWindow(notChargingWindow);
-        return GLib.SOURCE_REMOVE;
-      });
-    }
+    const sound = battery.charging ? "plug.mp3" : "unplug.mp3";
+    playSound(`~/.config/ags/audio/${sound}`);
+
+    exec(
+      `hyprctl keyword decoration:screen_shader ${
+        homeDir
+      }/.config/hypr/shaders/charging.frag`,
+    );
+
+    fadeIn(alertWindow);
+
+    timeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 2500, () => {
+      fadeOut(alertWindow);
+      timeoutId = 0;
+      return GLib.SOURCE_REMOVE;
+    });
   });
 
-  return chargingWindow;
+  return alertWindow;
 }
