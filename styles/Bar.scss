@@ -1,7 +1,7 @@
-@use "/home/shreyas/.cache/wal/colors.scss" as colors;
+@use "/home/shreyas/.cache/wal/colors.scss" as wal;
 
 .bar-container {
-    background: colors.$background;
+    background: wal.$background;
     margin-right: 0px;
 
     button {
@@ -15,7 +15,7 @@
         font-size: 20px;
         margin-left: 0.5rem;
         margin-right: 0.5rem;
-        color: colors.$foreground;
+        color: wal.$foreground;
     }
 
     .battery {
@@ -33,13 +33,13 @@
         margin-bottom: 1rem;
     }
     .workspace-container {
-        background: rgba(colors.$color6, 0.15);
+        background: rgba(wal.$color6, 0.15);
         border-radius: 100px;
         margin-top: 5px;
 
         padding: 3px;
         > .workspace-button {
-            background: rgba(colors.$background, 0.7);
+            background: rgba(wal.$background, 0.7);
             border-radius: 100%;
             min-height: 12px;
             min-width: 12px;
@@ -48,19 +48,19 @@
             box-shadow: unset;
 
             &:hover {
-                background: rgba(colors.$color6, 0.15);
+                background: rgba(wal.$color6, 0.15);
                 &.occupied {
-                    background: rgba(colors.$color6, 0.7);
+                    background: rgba(wal.$color6, 0.7);
                 }
             }
 
             &.active {
-                background: colors.$foreground;
+                background: wal.$foreground;
             }
 
             &.occupied {
                 &.active {
-                    background: colors.$color6;
+                    background: wal.$color6;
                 }
             }
         }

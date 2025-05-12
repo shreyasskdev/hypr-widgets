@@ -5,7 +5,24 @@ import Gio from "gi://Gio";
 import GLib from "gi://GLib";
 
 let chargingWindow = null;
+let notChargingWindow = null;
 let fadeTimeout = 0;
+
+export function playSound(path: string) {
+  path = path.replace(/^~/, GLib.get_home_dir());
+  try {
+    Gio.Subprocess.new(
+      ["mpv", "--no-video", "--quiet", path],
+      Gio.SubprocessFlags.NONE,
+    );
+  } catch (e) {
+    console.error("Failed to play sound:", e);
+  }
+}
+
+export function exec(cmd: string) {
+  Gio.Subprocess.new(cmd.split(" "), Gio.SubprocessFlags.NONE);
+}
 
 export default function ChargingAlert(gdkmonitor: Gdk.Monitor) {
   const battery = Battery.get_default();
@@ -41,34 +58,60 @@ export default function ChargingAlert(gdkmonitor: Gdk.Monitor) {
     </window>
   );
 
-  function fadeOutWindow() {
+  notChargingWindow = (
+    <window
+      className="charging-widget"
+      gdkmonitor={gdkmonitor}
+      exclusivity={Astal.Exclusivity.IGNORE}
+      application={App}
+      layer={Astal.Layer.TOP}
+      visible={false}
+      opacity={1.0}
+      title="Charging Widget"
+    >
+      <box className="charging-box">
+        <box
+          halign={Gtk.Align.CENTER}
+          valign={Gtk.Align.CENTER}
+          spacing={10}
+          hexpand={true}
+          vexpand={true}
+        >
+          <label label="󰚦" className="charging-label" />
+          <label label={batteryPercentage} className="charging-label not" />
+        </box>
+      </box>
+    </window>
+  );
+
+  function fadeOutWindow(window) {
     let opacity = 1.0;
     const fadeStep = 0.05;
     const interval = 20;
 
     GLib.timeout_add(GLib.PRIORITY_DEFAULT, interval, () => {
       opacity -= fadeStep;
-      chargingWindow.opacity = opacity;
+      window.opacity = opacity;
 
       if (opacity <= 0) {
-        chargingWindow.visible = false;
+        window.visible = false;
         return GLib.SOURCE_REMOVE;
       }
       return GLib.SOURCE_CONTINUE;
     });
   }
 
-  function fadeInWindow() {
+  function fadeInWindow(window) {
     let opacity = 0.0;
     const fadeStep = 0.05;
     const interval = 20;
 
-    chargingWindow.opacity = opacity;
-    chargingWindow.visible = true;
+    window.opacity = opacity;
+    window.visible = true;
 
     GLib.timeout_add(GLib.PRIORITY_DEFAULT, interval, () => {
       opacity += fadeStep;
-      chargingWindow.opacity = Math.min(opacity, 1.0);
+      window.opacity = Math.min(opacity, 1.0);
 
       if (opacity >= 1.0) return GLib.SOURCE_REMOVE;
       return GLib.SOURCE_CONTINUE;
@@ -80,24 +123,30 @@ export default function ChargingAlert(gdkmonitor: Gdk.Monitor) {
 
     if (isCharging) {
       GLib.timeout_add(GLib.PRIORITY_DEFAULT, 100, () => {
-        fadeInWindow();
+        fadeInWindow(chargingWindow);
         return GLib.SOURCE_REMOVE;
       });
-
-      Gio.Subprocess.new(
-        [
-          "hyprctl",
-          "keyword",
-          "decoration:screen_shader",
-          `${homeDir}/.config/hypr/shaders/charging.frag`,
-        ],
-        Gio.SubprocessFlags.NONE,
+      playSound("~/.config/ags/audio/plug.mp3");
+      exec(
+        `hyprctl keyword decoration:screen_shader ${homeDir}/.config/hypr/shaders/charging.frag`,
       );
-
       if (fadeTimeout) GLib.source_remove(fadeTimeout);
-
-      fadeTimeout = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 2000, () => {
-        fadeOutWindow();
+      fadeTimeout = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 2500, () => {
+        fadeOutWindow(chargingWindow);
+        return GLib.SOURCE_REMOVE;
+      });
+    } else {
+      GLib.timeout_add(GLib.PRIORITY_DEFAULT, 100, () => {
+        fadeInWindow(notChargingWindow);
+        return GLib.SOURCE_REMOVE;
+      });
+      playSound("~/.config/ags/audio/unplug.mp3");
+      exec(
+        `hyprctl keyword decoration:screen_shader ${homeDir}/.config/hypr/shaders/charging.frag`,
+      );
+      if (fadeTimeout) GLib.source_remove(fadeTimeout);
+      fadeTimeout = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 2500, () => {
+        fadeOutWindow(notChargingWindow);
         return GLib.SOURCE_REMOVE;
       });
     }

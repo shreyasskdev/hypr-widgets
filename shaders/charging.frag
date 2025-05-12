@@ -11,7 +11,7 @@ float getOffsetStrength(float time, vec2 dir) {
 }
 
 void main() {
-    if (time > 1.0) {
+    if (time > 2.4) {
         gl_FragColor = texture2D(tex, v_texcoord);
         return;
     }
@@ -39,4 +39,11 @@ void main() {
     color /= float(samples);
     gl_FragColor = vec4(color, 1.0);
     gl_FragColor.rgb += clamp(shading * 0.5, 0.0, 10.0);
+
+    // backdrop
+    float fadeIn = smoothstep(0.0, 0.2, time);
+    float fadeOut = smoothstep(2.1, 2.4, time);
+    float backdropStrength = mix(fadeIn, 1.0, step(0.2, time)) * (1.0 - fadeOut);
+
+    gl_FragColor.rgb *= (1.0 - backdropStrength * 0.3);
 }
