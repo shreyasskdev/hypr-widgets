@@ -32,14 +32,7 @@ Includes a Desktop clock, sidebar, and a charging animation.
     git clone https://github.com/shreyasskdev/hypr-widgets.git ~/.config/ags
     ```
 
-2. Copy the shaders to the Hyprland configuration:
-
-    ```bash
-    mkdir -p ~/.config/hypr/shaders
-    cp -r ~/.config/ags/shaders/* ~/.config/hypr/shaders/
-    ```
-
-3. Enable shaders with animation in your **Hyprland** configuration. This step is necessary because, for now, shaders with animation are required.
+2. Enable shaders with animation in your **Hyprland** configuration. This step is necessary because, for now, shaders with animation are required.
 
     ```bash
     # Debug settings
