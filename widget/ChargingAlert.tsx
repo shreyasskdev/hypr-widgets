@@ -120,7 +120,7 @@ export default function ChargingAlert(gdkmonitor: Gdk.Monitor) {
     exec(
       `hyprctl keyword decoration:screen_shader ${
         homeDir
-      }/.config/hypr/shaders/charging.frag`,
+      }/.config/ags/shaders/charging.frag`,
     );
 
     fadeIn(alertWindow);
