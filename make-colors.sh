@@ -9,7 +9,7 @@ if [[ -f "$wallpaper_path" ]]; then
     
     # Generate color scheme using wal
     wal -i "$wallpaper_path" --backend auto
-    mv ~/.cache/wal/colors.*  ./styles/
+    mv ~/.cache/wal/colors.scss  ./styles/colors.scss
 
     echo "Color scheme generated with wal."
 else

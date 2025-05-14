@@ -29,7 +29,7 @@ Includes a Desktop clock, sidebar, and a charging animation.
 1. Clone the repository to your configuration directory:
 
     ```bash
-    git clone https://github.com/shreyasskdev/hypr-widgets.git ~/.config/ags
+    git clone https://github.com/abancp/hypr-widgets.git ~/.config/ags
     ```
 
 2. Enable shaders with animation in your **Hyprland** configuration. This step is necessary because, for now, shaders with animation are required.
