@@ -32,7 +32,7 @@ function stopAnimations() {
   fadeInId = fadeOutId = timeoutId = 0;
 }
 
-function fadeIn(window: Gtk.Window) {
+export function fadeIn(window: Gtk.Window) {
   stopAnimations();
   window.opacity = 0;
   window.visible = true;
@@ -53,7 +53,7 @@ function fadeIn(window: Gtk.Window) {
   });
 }
 
-function fadeOut(window: Gtk.Window) {
+export function fadeOut(window: Gtk.Window) {
   let opacity = 1;
   const interval = 20;
   const step = 0.05;
@@ -131,6 +131,7 @@ export default function ChargingAlert(gdkmonitor: Gdk.Monitor) {
       return GLib.SOURCE_REMOVE;
     });
   });
+
 
   return alertWindow;
 }

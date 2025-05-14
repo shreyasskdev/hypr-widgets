@@ -1,7 +1,7 @@
 @use "./colors.scss" as wal;
 
-.charging-box {
-    border: 1px solid rgba(wal.$foreground, 0.3);
+.low-battery-box {
+    border: 4px solid rgba(#ff0000, 0.3);
     background: wal.$background;
     min-width: 200px;
     min-height: 200px;
@@ -11,8 +11,4 @@
         color: wal.$color6;
         font-size: 3rem;
     }
-}
-
-.not {
-    padding-left: 0.5rem;
 }

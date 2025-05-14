@@ -3,6 +3,10 @@ import style from "./style.scss";
 import DesktopClock from "./widget/DesktopClock";
 import Bar from "./widget/Bar";
 import ChargingAlert from "./widget/ChargingAlert";
+import LowBatteryAlert from "./widget/LowBatteryAlert";
+
+
+
 
 App.start({
   css: style,
@@ -11,6 +15,7 @@ App.start({
       Bar(gdkmonitor);
       DesktopClock(gdkmonitor);
       ChargingAlert(gdkmonitor);
+      LowBatteryAlert(gdkmonitor);
     });
   },
 });
