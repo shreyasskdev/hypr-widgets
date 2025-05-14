@@ -56,12 +56,12 @@ export default function LowBatteryAlert(gdkmonitor: Gdk.Monitor) {
   battery.connect("notify::percentage", () => {
     const per = battery.percentage;
     log(per)
-    if(per === 0.15 && !battery.charging){
+    if(per == 0.15 && !battery.charging){
     playSound(`~/.config/ags/audio/unplug.mp3`);
 
     fadeIn(alertWindow);
 
-    timeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 2000, () => {
+    timeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 2500, () => {
       fadeOut(alertWindow);
       timeoutId = 0;
       return GLib.SOURCE_REMOVE;

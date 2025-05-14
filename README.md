@@ -49,5 +49,5 @@ Includes a Desktop clock, sidebar, and a charging animation.
 Once everything is set up, you can run the widgets with:
 
 ```bash
-ags run
+. ~/.config/ags/init.sh 
 ```

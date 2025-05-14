@@ -6,6 +6,8 @@ import ChargingAlert from "./widget/ChargingAlert";
 import LowBatteryAlert from "./widget/LowBatteryAlert";
 
 
+
+
 App.start({
   css: style,
   main() {

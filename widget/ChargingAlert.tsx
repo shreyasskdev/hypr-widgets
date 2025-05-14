@@ -125,7 +125,7 @@ export default function ChargingAlert(gdkmonitor: Gdk.Monitor) {
 
     fadeIn(alertWindow);
 
-    timeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 2000, () => {
+    timeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 2500, () => {
       fadeOut(alertWindow);
       timeoutId = 0;
       return GLib.SOURCE_REMOVE;
