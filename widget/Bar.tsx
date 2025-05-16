@@ -3,6 +3,7 @@ import { Variable } from "astal";
 import WorkspacesPanelButton from "./WorkspacesPanelButton";
 import Battery from "gi://AstalBattery";
 import { bind } from "astal";
+import AstalHyprland from "gi://AstalHyprland";
 
 const hour = Variable("").poll(1000, "date +%I");
 const minute = Variable("").poll(1000, "date +%M");
@@ -10,6 +11,20 @@ const ampm = Variable("").poll(1000, "date +%p");
 const date = Variable("").poll(1000, "date '+%A, %d'");
 
 export default function Bar(gdkmonitor: Gdk.Monitor) {
+  const hyprland = AstalHyprland.get_default();
+
+  const clockClassNames = Variable.derive(
+    [bind(hyprland, "focusedWorkspace"), bind(hyprland, "clients")],
+    (fws, _) => {
+      const workspace = hyprland.get_workspace(fws.id);
+      const occupied = workspace ? workspace.get_clients().length > 0 : false;
+      const classes = ["clock-container"];
+      if (occupied) classes.push("occupied");
+      else classes.push("not-occupied");
+      return classes;
+    },
+  );
+
   const { TOP, LEFT, BOTTOM } = Astal.WindowAnchor;
   const battery = Battery.get_default();
   const b = bind(battery, "percentage").as((val) => {
@@ -34,10 +49,13 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
         <box valign={Gtk.Align.START}>
           <WorkspacesPanelButton />
         </box>
+        {/* Clock container with reactive classNames */}
         <box
+          className={clockClassNames().as((classes) => classes.join(" "))}
           orientation={Gtk.Orientation.VERTICAL}
           heightRequest={100}
           valign={Gtk.Align.CENTER}
+          onDestroy={() => clockClassNames.drop()}
         >
           <label label={hour()} className="clock" />
           <label label=":" angle={90} className="clock" />

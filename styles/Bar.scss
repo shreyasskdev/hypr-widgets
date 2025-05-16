@@ -18,6 +18,16 @@
         color: wal.$foreground;
     }
 
+    .not-occupied {
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .occupied {
+        opacity: 1;
+        transition: opacity 0.3s ease;
+    }
+
     .battery {
         font-weight: 600;
         font-size: 14px;
