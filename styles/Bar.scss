@@ -45,6 +45,10 @@
         background: wal.$foreground;
     }
 
+    .battery-low {
+        background: red;
+    }
+
     .workspace-container {
         background: rgba(wal.$color6, 0.15);
         border-radius: 100px;

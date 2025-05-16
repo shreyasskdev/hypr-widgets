@@ -33,14 +33,17 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
 
   // Battery handling
   const battery = Battery.get_default();
-  const b = bind(battery, "percentage").as((val) => {
-    return (val * 100).toFixed(0) + "";
-  });
+  const percentageBinding = bind(battery, "percentage");
 
-  const batteryFillVariable = b.as((percentStr) => {
-    const pct = parseInt(percentStr);
-    return `--battery-pct: ${pct}%`;
-  });
+  const b = percentageBinding.as((val) => (val * 100).toFixed(0) + "");
+
+  const batteryFillVariable = percentageBinding.as(
+    (val) => `--battery-pct: ${(val * 100).toFixed(0)}%`,
+  );
+
+  const batteryLowClassName = percentageBinding.as((val) =>
+    val * 100 < 20 ? "battery-low" : "",
+  );
 
   return (
     <window
@@ -73,7 +76,7 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
         <box
           valign={Gtk.Align.END}
           orientation={Gtk.Orientation.VERTICAL}
-          cssClasses={["battery"]}
+          cssClasses={batteryLowClassName.as((cls) => ["battery", cls])}
           // css={batteryFillVariable}
         >
           <label label={b} />

@@ -17,7 +17,7 @@ Includes a Desktop clock, sidebar, and a charging animation.
 
 - **Hyprland** (Wayland compositor)
 - **AGS**
-- **GTK 3 / GTK 4**
+- **GTK 4**
 - **pywal16**
 
 > **Important**: Before proceeding, open all SCSS files in the project and replace any reference to `colors` with your **username**. Since I haven't found a way to reference the home folder relatively, you'll need to make this change manually to ensure the color scheme is applied correctly.
