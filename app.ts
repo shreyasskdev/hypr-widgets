@@ -11,8 +11,7 @@ import GLib from "gi://GLib";
 App.start({
   css: style,
   main() {
-    const colors = readFile("./styles/colors.css");
-    App.apply_css(colors);
+    loadApplyAndWriteCss();
 
     App.get_monitors().forEach((gdkmonitor) => {
       Bar(gdkmonitor);
@@ -23,11 +22,15 @@ App.start({
   },
 });
 
+function loadApplyAndWriteCss() {
+  const colors = readFile(`${GLib.get_home_dir()}/.cache/wal/colors.css`);
+  App.apply_css(colors);
+  writeFile("./styles/colors.css", colors);
+}
+
 monitorFile(
   `${GLib.get_home_dir()}/.cache/wal/colors.css`,
   (file: string, event: Gio.FileMonitorEvent) => {
-    const content = readFile(file);
-    writeFile("./styles/colors.css", content);
-    App.apply_css(content);
+    loadApplyAndWriteCss();
   },
 );
