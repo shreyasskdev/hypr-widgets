@@ -28,7 +28,11 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
   const { TOP, LEFT, BOTTOM } = Astal.WindowAnchor;
   const battery = Battery.get_default();
   const b = bind(battery, "percentage").as((val) => {
-    return (val * 100).toFixed(0) + "%";
+    return (val * 100).toFixed(0) + "";
+  });
+  const batteryFillVariable = b.as((percentStr) => {
+    const pct = parseInt(percentStr);
+    return `--battery-pct: ${pct}%`;
   });
   return (
     <window
@@ -61,9 +65,14 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
           <label label=":" angle={90} className="clock" />
           <label label={minute()} className="clock" />
         </box>
-        <box valign={Gtk.Align.END} orientation={Gtk.Orientation.VERTICAL}>
-          <label label={b} className="battery" />
-          <label label="" className="battery-icon" />
+        <box
+          valign={Gtk.Align.END}
+          orientation={Gtk.Orientation.VERTICAL}
+          className="battery"
+          css={batteryFillVariable}
+        >
+          <label label={b} />
+          {/* <label label="" className="battery-icon" /> */}
         </box>
       </centerbox>
     </window>

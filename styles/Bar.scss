@@ -28,20 +28,29 @@
         transition: opacity 0.3s ease;
     }
 
-    .battery {
-        font-weight: 600;
+    /* .battery {
+        font-weight: 800;
         font-size: 14px;
 
         margin-left: 0.5rem;
         margin-right: 0.5rem;
-    }
-    .battery-icon {
-        font-size: 18px;
+        margin-bottom: 0.5rem;
 
-        margin-left: 0rem;
-        margin-right: 0.7rem;
-        margin-bottom: 1rem;
+        background: white;
+        color: black;
+        border-radius: 50px;
+    } */
+    .battery {
+        font-weight: 800;
+        font-size: 14px;
+        margin: 0.5rem;
+        padding-left: 5px;
+        padding-right: 5px;
+        color: wal.$background;
+        border-radius: 50px;
+        background: wal.$color6;
     }
+
     .workspace-container {
         background: rgba(wal.$color6, 0.15);
         border-radius: 100px;
