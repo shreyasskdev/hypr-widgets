@@ -1,6 +1,7 @@
 @use "./styles/DesktopClock.scss";
 @use "./styles/Bar.scss";
 @use "./styles/Charging.scss";
+@use "./styles/Notification.scss";
 
 window.Bar {
     background: transparent;
