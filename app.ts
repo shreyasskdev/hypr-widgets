@@ -12,7 +12,7 @@ App.start({
   css: style,
   main() {
     App.get_monitors().forEach((gdkmonitor) => {
-      Bar(gdkmonitor);
+      //Bar(gdkmonitor);
       DesktopClock(gdkmonitor);
       ChargingAlert(gdkmonitor);
       LowBatteryAlert(gdkmonitor);

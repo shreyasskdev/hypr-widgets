@@ -4,10 +4,22 @@
     font-weight: bold;
     font-family: Electroharmonix;
     color: wal.$background;
+
+
 }
 .clock-time {
-    font-size: 100px;
+    font-size: 75px;
+    text-shadow: 
+    -1px -1px 0 wal.$foreground,
+     1px -1px 0 wal.$foreground,
+    -1px  1px 0 wal.$foreground,
+     1px  1px 0 wal.$foreground; 
 }
 .clock-date {
     font-size: 25px;
+    text-shadow: 
+    -1px -1px 0 rgba(wal.$foreground,0.5),
+     1px -1px 0 rgba(wal.$foreground,0.5),
+    -1px  1px 0 rgba(wal.$foreground,0.5),
+     1px  1px 0 rgba(wal.$foreground,0.5); 
 }
