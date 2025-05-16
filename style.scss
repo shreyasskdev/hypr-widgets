@@ -1,8 +1,12 @@
 @use "./styles/DesktopClock.scss";
 @use "./styles/Bar.scss";
 @use "./styles/ChargingAlert.scss";
-@use "./styles/Notification.scss";
+/* @use "./styles/Notification.scss"; */
 /* @use "./styles/MediaPlayer.scss"; */
+
 window.Bar {
     background: transparent;
+}
+* {
+    transition: 0.2s ease;
 }

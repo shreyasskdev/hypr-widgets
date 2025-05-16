@@ -1,8 +1,13 @@
-@use "/home/shreyas/.cache/wal/colors.scss" as wal;
+/* @use "/home/shreyas/.cache/wal/colors.scss" as wal; */
+@use "sass:string";
+@function gtkalpha($c, $a) {
+    @return string.unquote("alpha(#{$c},#{$a})");
+}
 
 .bar-container {
     /* background: blue; */
-    background: wal.$background;
+    /* background: wal.$background; */
+    background: var(--background);
     margin-right: 0px;
 
     button {
@@ -16,7 +21,8 @@
         font-size: 20px;
         margin-left: 0.5rem;
         margin-right: 0.5rem;
-        color: wal.$foreground;
+        /* color: wal.$foreground; */
+        color: var(--foreground);
     }
     .rotate {
         transform: rotate(90deg);
@@ -40,9 +46,11 @@
         margin: 0.5rem;
         padding-left: 5px;
         padding-right: 5px;
-        color: wal.$background;
+        /* color: wal.$background; */
+        color: var(--background);
         border-radius: 50px;
-        background: wal.$foreground;
+        /* background: wal.$foreground; */
+        background: var(--foreground);
     }
 
     .battery-low {
@@ -50,13 +58,15 @@
     }
 
     .workspace-container {
-        background: rgba(wal.$color6, 0.15);
+        /* background: rgba(wal.$color6, 0.15); */
+        background: gtkalpha(var(--color6), 0.15);
         border-radius: 100px;
         margin-top: 5px;
 
         padding: 3px;
         > .workspace-button {
-            background: rgba(wal.$background, 0.7);
+            background: gtkalpha(var(--background), 0.7);
+            /* background: rgba(wal.$background, 0.7); */
             border-radius: 100%;
             min-height: 12px;
             min-width: 12px;
@@ -65,19 +75,23 @@
             box-shadow: unset;
 
             &:hover {
-                background: rgba(wal.$color6, 0.15);
+                background: gtkalpha(var(--color6), 0.15);
+                /* background: rgba(wal.$color6, 0.15); */
                 &.occupied {
-                    background: rgba(wal.$color6, 0.7);
+                    background: gtkalpha(var(--color6), 0.7);
+                    /* background: rgba(wal.$color6, 0.7); */
                 }
             }
 
             &.active {
-                background: wal.$foreground;
+                background: var(--foreground);
+                /* background: wal.$foreground; */
             }
 
             &.occupied {
                 &.active {
-                    background: wal.$color6;
+                    background: var(--color6);
+                    /* background: wal.$color6; */
                 }
             }
         }

@@ -1,9 +1,13 @@
-@use "/home/shreyas/.cache/wal/colors.scss" as wal;
+/* @use "/home/shreyas/.cache/wal/colors.scss" as wal;*/
+@use "sass:string";
+@function gtkalpha($c, $a) {
+    @return string.unquote("alpha(#{$c},#{$a})");
+}
 
 .clock-container {
     font-weight: bold;
     font-family: Electroharmonix;
-    color: wal.$background;
+    color: var(--background);
 }
 .clock-time {
     font-size: 100px;
