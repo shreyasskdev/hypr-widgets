@@ -1,6 +1,7 @@
 @use "/home/shreyas/.cache/wal/colors.scss" as wal;
 
 .bar-container {
+    /* background: blue; */
     background: wal.$background;
     margin-right: 0px;
 
@@ -17,29 +18,22 @@
         margin-right: 0.5rem;
         color: wal.$foreground;
     }
+    .rotate {
+        transform: rotate(90deg);
+    }
 
     .not-occupied {
         opacity: 0;
-        transition: opacity 0.3s ease;
+        filter: blur(10px);
+        transition: 0.5s ease;
     }
 
     .occupied {
         opacity: 1;
-        transition: opacity 0.3s ease;
+        filter: blur(0px);
+        transition: 0.5s ease;
     }
 
-    /* .battery {
-        font-weight: 800;
-        font-size: 14px;
-
-        margin-left: 0.5rem;
-        margin-right: 0.5rem;
-        margin-bottom: 0.5rem;
-
-        background: white;
-        color: black;
-        border-radius: 50px;
-    } */
     .battery {
         font-weight: 800;
         font-size: 14px;

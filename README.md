@@ -4,7 +4,7 @@ Widgets for **Hyprland** using [AGS](https://github.com/Aylur/ags).
 
 ## Description
 
-A collection of widgets for the **Hyprland** Wayland compositor made with **AGS**.  
+A collection of widgets for the **Hyprland** Wayland compositor made with **AGS**.
 Includes a Desktop clock, sidebar, and a charging animation.
 
 ## Features
@@ -49,5 +49,5 @@ Includes a Desktop clock, sidebar, and a charging animation.
 Once everything is set up, you can run the widgets with:
 
 ```bash
-ags run
+ags run --gtk4
 ```

@@ -1,10 +1,10 @@
-import { App, Astal, Gtk, Gdk } from "astal/gtk3";
+import { App, Astal, Gtk, Gdk } from "astal/gtk4";
 import Battery from "gi://AstalBattery";
 import { bind } from "astal";
 import Gio from "gi://Gio";
 import GLib from "gi://GLib";
 
-let alertWindow = null;
+let alertWindow: Astal.Window | null = null;
 let fadeInId = 0;
 let fadeOutId = 0;
 let timeoutId = 0;
@@ -87,7 +87,7 @@ export default function ChargingAlert(gdkmonitor: Gdk.Monitor) {
 
   alertWindow = (
     <window
-      className="charging-widget"
+      cssClasses={["charging-widget"]}
       gdkmonitor={gdkmonitor}
       exclusivity={Astal.Exclusivity.IGNORE}
       application={App}
@@ -96,7 +96,7 @@ export default function ChargingAlert(gdkmonitor: Gdk.Monitor) {
       opacity={0}
       title="Charging Alert"
     >
-      <box className="charging-box">
+      <box cssClasses={["charging-box"]}>
         <box
           halign={Gtk.Align.CENTER}
           valign={Gtk.Align.CENTER}
@@ -104,8 +104,11 @@ export default function ChargingAlert(gdkmonitor: Gdk.Monitor) {
           hexpand={true}
           vexpand={true}
         >
-          <label label={chargingIcon} className="charging-label" />
-          <label label={batteryPercentage} className={labelClass} />
+          <label label={chargingIcon} cssClasses={["charging-label"]} />
+          <label
+            label={batteryPercentage}
+            cssClasses={labelClass.as((c) => [c])}
+          />
         </box>
       </box>
     </window>

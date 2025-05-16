@@ -1,8 +1,8 @@
 @use "./styles/DesktopClock.scss";
 @use "./styles/Bar.scss";
-@use "./styles/Charging.scss";
+@use "./styles/ChargingAlert.scss";
 @use "./styles/Notification.scss";
-
+/* @use "./styles/MediaPlayer.scss"; */
 window.Bar {
     background: transparent;
 }

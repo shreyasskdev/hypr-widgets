@@ -1,9 +1,8 @@
-import { Gtk } from "astal/gtk3";
+import { Gtk } from "astal/gtk4";
 import AstalHyprland from "gi://AstalHyprland";
-// import { range } from "../../utils";
 import { bind } from "astal";
 import { Variable } from "astal";
-import { ButtonProps } from "astal/gtk3/widget";
+import { ButtonProps } from "astal/gtk4/widget";
 
 type WsButtonProps = ButtonProps & {
   ws: AstalHyprland.Workspace;
@@ -15,11 +14,10 @@ function WorkspaceButton({ ws, ...props }: WsButtonProps) {
     [bind(hyprland, "focusedWorkspace"), bind(hyprland, "clients")],
     (fws, _) => {
       const classes = ["workspace-button"];
-
-      const active = fws.id == ws.id;
+      const active = fws.id == ws.id - 1;
       active && classes.push("active");
-
-      const occupied = hyprland.get_workspace(ws.id)?.get_clients().length > 0;
+      const occupied =
+        hyprland.get_workspace(ws.id - 1)?.get_clients().length > 0;
       occupied && classes.push("occupied");
       return classes;
     },
@@ -27,8 +25,8 @@ function WorkspaceButton({ ws, ...props }: WsButtonProps) {
 
   return (
     <button
-      className={classNames().as((classes) => classes.join(" "))}
-      onDestroy={() => classNames.drop()}
+      cssClasses={classNames().as((classes) => classes)}
+      // onDispose={() => classNames.drop()}
       onClicked={() => ws.focus()}
       width_request={2}
       height_request={2}
@@ -40,7 +38,7 @@ function WorkspaceButton({ ws, ...props }: WsButtonProps) {
 export default function WorkspacesPanelButton() {
   return (
     <box
-      className="workspace-container"
+      cssClasses={["workspace-container"]}
       halign={Gtk.Align.CENTER}
       hexpand={true}
       orientation={Gtk.Orientation.VERTICAL}
@@ -51,6 +49,7 @@ export default function WorkspacesPanelButton() {
     </box>
   );
 }
+
 function range(max: number) {
-  return Array.from({ length: max + 1 }, (_, i) => i);
+  return Array.from({ length: max }, (_, i) => i + 1);
 }

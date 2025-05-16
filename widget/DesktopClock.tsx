@@ -1,4 +1,4 @@
-import { App, Astal, Gtk, Gdk } from "astal/gtk3";
+import { App, Astal, Gtk, Gdk } from "astal/gtk4";
 import { Variable } from "astal";
 
 const timeFormat = new Intl.DateTimeFormat("en-US", {
@@ -23,27 +23,35 @@ const date = Variable("").poll(1000, () => {
 });
 
 export default function DesktopClock(gdkmonitor: Gdk.Monitor) {
-  const { LEFT, RIGHT } = Astal.WindowAnchor;
+  const { LEFT } = Astal.WindowAnchor;
 
   const geometry = gdkmonitor.get_geometry();
   const screenWidth = geometry.width;
 
   return (
     <window
-      className="Bar"
+      visible
+      cssClasses={["Bar"]}
       gdkmonitor={gdkmonitor}
       exclusivity={Astal.Exclusivity.IGNORE}
       application={App}
-      layer={Astal.Layer.BOTTOM}
-      anchor={Astal.WindowAnchor.LEFT}
+      anchor={LEFT}
       margin={screenWidth * 0.25 - 200}
+      // layer={Astal.Layer.BOTTOM}
+      onShow={(win) => {
+        win.set_layer(Astal.Layer.BOTTOM);
+        // win.set_margin(screenWidth * 0.25 - 200);
+      }}
     >
-      <box className="clock-container" orientation={Gtk.Orientation.VERTICAL}>
-        <box className="clock-time" halign={Gtk.Align.CENTER}>
-          {time()}
+      <box
+        orientation={Gtk.Orientation.VERTICAL}
+        cssClasses={["clock-container"]}
+      >
+        <box halign={Gtk.Align.CENTER} cssClasses={["clock-time"]}>
+          <label label={time()} />
         </box>
-        <box className="clock-date" halign={Gtk.Align.CENTER}>
-          {date()}
+        <box halign={Gtk.Align.CENTER} cssClasses={["clock-date"]}>
+          <label label={date()} />
         </box>
       </box>
     </window>

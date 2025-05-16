@@ -1,10 +1,13 @@
-import { App, Astal, Gtk, Gdk } from "astal/gtk3";
+import { App, Astal, Gtk, Gdk } from "astal/gtk4";
 import { Variable } from "astal";
-import WorkspacesPanelButton from "./WorkspacesPanelButton";
-import Battery from "gi://AstalBattery";
 import { bind } from "astal";
+import Battery from "gi://AstalBattery";
 import AstalHyprland from "gi://AstalHyprland";
 
+// Import WorkspacesPanelButton component
+import WorkspacesPanelButton from "./WorkspacesPanelButton";
+
+// Time variables
 const hour = Variable("").poll(1000, "date +%I");
 const minute = Variable("").poll(1000, "date +%M");
 const ampm = Variable("").poll(1000, "date +%p");
@@ -13,6 +16,7 @@ const date = Variable("").poll(1000, "date '+%A, %d'");
 export default function Bar(gdkmonitor: Gdk.Monitor) {
   const hyprland = AstalHyprland.get_default();
 
+  // Reactive class names for clock container
   const clockClassNames = Variable.derive(
     [bind(hyprland, "focusedWorkspace"), bind(hyprland, "clients")],
     (fws, _) => {
@@ -26,53 +30,54 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
   );
 
   const { TOP, LEFT, BOTTOM } = Astal.WindowAnchor;
+
+  // Battery handling
   const battery = Battery.get_default();
   const b = bind(battery, "percentage").as((val) => {
     return (val * 100).toFixed(0) + "";
   });
+
   const batteryFillVariable = b.as((percentStr) => {
     const pct = parseInt(percentStr);
     return `--battery-pct: ${pct}%`;
   });
+
   return (
     <window
-      className="Bar"
+      visible
+      cssClasses={["Bar"]}
       gdkmonitor={gdkmonitor}
       exclusivity={Astal.Exclusivity.EXCLUSIVE}
       anchor={TOP | LEFT | BOTTOM}
       application={App}
-      width_request={10}
-      height_request={10}
-      widthRequest={10}
-      heightRequest={10}
     >
       <centerbox
         orientation={Gtk.Orientation.VERTICAL}
-        className="bar-container"
+        cssClasses={["bar-container"]}
       >
         <box valign={Gtk.Align.START}>
           <WorkspacesPanelButton />
         </box>
         {/* Clock container with reactive classNames */}
         <box
-          className={clockClassNames().as((classes) => classes.join(" "))}
+          cssClasses={clockClassNames().as((classes) => classes)}
           orientation={Gtk.Orientation.VERTICAL}
           heightRequest={100}
           valign={Gtk.Align.CENTER}
           onDestroy={() => clockClassNames.drop()}
         >
-          <label label={hour()} className="clock" />
-          <label label=":" angle={90} className="clock" />
-          <label label={minute()} className="clock" />
+          <label label={hour()} cssClasses={["clock"]} />
+          <label label=":" cssClasses={["clock", "rotate"]} />
+          <label label={minute()} cssClasses={["clock"]} />
         </box>
         <box
           valign={Gtk.Align.END}
           orientation={Gtk.Orientation.VERTICAL}
-          className="battery"
-          css={batteryFillVariable}
+          cssClasses={["battery"]}
+          // css={batteryFillVariable}
         >
           <label label={b} />
-          {/* <label label="" className="battery-icon" /> */}
+          {/* <label label="" cssName="battery-icon" /> */}
         </box>
       </centerbox>
     </window>
